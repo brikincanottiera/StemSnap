@@ -13,7 +13,7 @@
 1.1 - Added welcome screen, settings info panel
 1.0 - Stable release
         ]]></changelog>
-        <source file="StemSnap.lua" main="main" type="script">https://raw.githubusercontent.com/brikincanottiera/StemSnap/main/Stem%20Routing/StemSnap.lua</source>
+        <source file="StemSnap.lua" main="main" type="script">https://github.com/brikincanottiera/StemSnap/releases/download/v1.4/StemSnap.lua</source>
       </version>
     </reapack>
   </category>
