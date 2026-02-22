@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<index version="1" name="StemSnap" desc="Brik in canottiera's REAPER scripts">
+  <category name="Stem Routing">
+    <reapack name="StemSnap.lua" type="script" desc="StemSnap - Drop your stems into the right folder buses automatically">
+      <version name="1.3" author="Brik in canottiera" time="2026-02-22T00:00:00Z">
+        <changelog><![CDATA[
+1.3 - Added track counter, window position memory
+1.2 - Added stale rules detection, reset config
+1.1 - Added welcome screen, settings info panel
+1.0 - Stable release
+        ]]></changelog>
+        <source file="StemSnap.lua">https://raw.githubusercontent.com/brikincanottiera/StemSnap/main/StemSnap.lua</source>
+      </version>
+    </reapack>
+  </category>
+</index>
