@@ -1,6 +1,9 @@
 # StemSnap
 **Drop your stems into the right folder buses automatically: no clicks, no drag.**
 
+![StemSnap GUI](assets/StemSnap%20Gui.png)
+![StemSnap Settings](assets/StemSnap%20Settings.png)
+
 StemSnap is a REAPER script that automatically routes your selected tracks into the correct folder buses based on their names. Select your stems, run the script, confirm and done.
 
 ---
