@@ -26,7 +26,7 @@ StemSnap is a REAPER script that automatically routes your selected tracks into 
 1. In REAPER, go to **Extensions → ReaPack → Import repositories**
 2. Paste this URL:
 ```
-   https://raw.githubusercontent.com/brikincanottiera/StemSnap/main/index.xml
+   https://github.com/brikincanottiera/StemSnap/raw/main/index.xml
 ```
 3. Go to **Extensions → ReaPack → Browse packages**, find **StemSnap** and install it
 
