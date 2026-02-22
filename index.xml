@@ -3,7 +3,7 @@
   <category name="Stem Routing">
     <reapack name="StemSnap.lua" type="script" desc="StemSnap - Drop your stems into the right folder buses automatically">
       <metadata>
-  <description><![CDATA[{\rtf1\ansi StemSnap - Drop your stems into the right folder buses automatically, no clicks, no drag.\line\line Select your tracks, run the script, confirm the assignments and done.\line\line Requires ReaImGui (install via ReaPack).}]]></description>
+  <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Arial;}}{\f0\fs24\b StemSnap - Drop your stems into the right folder buses automatically, no clicks, no drag.\b0\line\line\fs20 Select your tracks, run the script, confirm the assignments and done.\line\line Requires ReaImGui (install via ReaPack).}}]]></description>
 </metadata>
       <version name="1.4" author="Brik in canottiera" time="2026-02-22T12:00:00Z">
         <changelog><![CDATA[
