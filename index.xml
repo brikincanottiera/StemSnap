@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Brik in canottiera Scripts" desc="Brik in canottiera's REAPER scripts">
+<index version="1" name="Brik in canottiera" desc="Brik in canottiera's REAPER scripts">
   <category name="Stem Routing">
     <reapack name="StemSnap.lua" type="script" desc="StemSnap - Drop your stems into the right folder buses automatically">
       <metadata>
