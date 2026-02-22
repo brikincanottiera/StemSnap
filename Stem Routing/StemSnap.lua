@@ -1,15 +1,12 @@
 -- @description StemSnap - Drop your stems into the right folder buses automatically — no clicks, no drag.
 -- @author Brik in canottiera
--- @version 1.3
+-- @version 1.4
 -- @changelog
+--   1.4 - New buses created at top of project, success message shows new buses and routing reminder
 --   1.3 - Added track counter, window position memory
 --   1.2 - Added stale rules detection, reset config
 --   1.1 - Added welcome screen, settings info panel
---   1.0 - Added direct track pointers, single-word keyword matching
---   0.9 - Added placeholder dropdown for unrecognized tracks
---   0.8 - Added Settings window with custom rules
---   0.7 - Added partial routing confirmation popup
---   0.6 - Added version header, ReaImGui dependency check
+--   1.0 - Stable release
 -- @provides
 --   [main] StemSnap.lua
 -- @link
@@ -37,7 +34,7 @@ end
 
 reaper.ClearConsole()
 
-local SCRIPT_VERSION = "v1.3"
+local SCRIPT_VERSION = "v1.4"
 
 local script_path   = reaper.GetResourcePath() .. "/Scripts/AutoFolderRouting_config.json"
 local firstrun_path = reaper.GetResourcePath() .. "/Scripts/AutoFolderRouting_firstrun.flag"
@@ -62,6 +59,8 @@ local L = {
     keyword_hint         = "Custom keyword...",
     locked_col           = "Locked",
     success              = "tracks routed successfully!",
+    new_buses_created    = "New buses created:",
+    routing_reminder     = "⚠ Remember to route the new buses\nto your master or group chain.",
     remove_keyword       = "Remove keyword",
     unassigned_warning   = "The following tracks have no bus assigned:\n\n",
     unassigned_question  = "\nProceed anyway?",
@@ -386,9 +385,10 @@ function MoveUnderBus(track_ptr, bus_ptr)
     end
 end
 
+-- Crea nuovo bus in cima al progetto (posizione 0)
 function CreateNewBus(bus_name)
-    reaper.InsertTrackAtIndex(reaper.CountTracks(0), true)
-    local bus = reaper.GetTrack(0, reaper.CountTracks(0) - 1)
+    reaper.InsertTrackAtIndex(0, true)
+    local bus = reaper.GetTrack(0, 0)
     reaper.GetSetMediaTrackInfo_String(bus, "P_NAME", bus_name, true)
     reaper.SetMediaTrackInfo_Value(bus, "I_FOLDERDEPTH", 1)
     return bus
@@ -403,16 +403,22 @@ function ApplyRouting(track_list)
 
     reaper.Undo_BeginBlock()
     local count = 0
+    local new_buses = {}
     local by_bus = {}
+
     for _, item in ipairs(track_list) do
         if item.assigned_bus and item.assigned_bus ~= "" then
             by_bus[item.assigned_bus] = by_bus[item.assigned_bus] or {}
             table.insert(by_bus[item.assigned_bus], item)
         end
     end
+
     for bus_name, items in pairs(by_bus) do
         local bus_ptr = GetTrackByName(bus_name)
-        if not bus_ptr then bus_ptr = CreateNewBus(bus_name) end
+        if not bus_ptr then
+            bus_ptr = CreateNewBus(bus_name)
+            table.insert(new_buses, bus_name)
+        end
         if bus_ptr then
             for _, item in ipairs(items) do
                 MoveUnderBus(item.ptr, bus_ptr)
@@ -420,9 +426,20 @@ function ApplyRouting(track_list)
             end
         end
     end
+
     reaper.Undo_EndBlock("StemSnap", -1)
     reaper.UpdateArrange()
-    reaper.ShowMessageBox(count .. " " .. L.success, "StemSnap", 0)
+
+    -- Messaggio finale
+    local msg = count .. " " .. L.success
+    if #new_buses > 0 then
+        msg = msg .. "\n\n" .. L.new_buses_created .. "\n"
+        for _, name in ipairs(new_buses) do
+            msg = msg .. "  • " .. name .. "\n"
+        end
+        msg = msg .. "\n" .. L.routing_reminder
+    end
+    reaper.ShowMessageBox(msg, "StemSnap", 0)
 end
 
 function GetUnassigned(track_list)
@@ -840,8 +857,8 @@ local function loop()
         end
 
         reaper.ImGui_Spacing(ctx)
-        local assigned     = CountAssigned(track_list)
-        local total        = #track_list
+        local assigned      = CountAssigned(track_list)
+        local total         = #track_list
         local counter_color = assigned == total and COLOR_GREEN or COLOR_ORANGE
         reaper.ImGui_TextColored(ctx, counter_color,
             assigned .. " / " .. total .. " tracks assigned")
